@@ -1,11 +1,9 @@
-require_relative './lib/game.rb'
-require_relative './lib/board.rb'
+require_relative './lib/game_menu.rb'
 
 def play
+    menu = GameMenu.new
     # chess = Game.new
-    # chess.play
-    board = Board.new
-    board.show
+    menu.play
 end
 
 play

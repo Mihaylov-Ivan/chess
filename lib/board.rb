@@ -1,3 +1,5 @@
+require_relative './pieces/*.rb'
+
 class Board
 
     attr_reader :board
@@ -11,6 +13,36 @@ class Board
         ["◻ ", "◼ ", "◻ ", "◼ ", "◻ ", "◼ ", "◻ ", "◼ "],
         ["♟︎ ", "♟︎ ", "♟︎ ", "♟︎ ", "♟︎ ", "♟︎ ", "♟︎ ", "♟︎ "],
         ["♜ ", "♞ ", "♝ ", "♛ ", "♚ ", "♝ ", "♞ ", "♜ "]]
+
+        create_pieces
+    end
+
+    def create_pieces
+        white_pawns = []
+        black_pawns = []
+
+        ('A'..'H').each do |letter|
+            white_pawns << Pawn.new('White', number, "2#{letter}")
+            black_pawns << Pawn.new('Black', number, "7#{letter}")
+            number++
+        end
+
+        white_rooks = []
+        white_knights = []
+        white_bishops = []
+        white_king =
+        white_queen =
+
+        black_rooks = []
+        black_knights = []
+        black_bishops = []
+        black_king =
+        black_queen =
+        number = 0
+
+
+
+
     end
 
     def show

@@ -2,43 +2,33 @@ require_relative 'display.rb'
 require_relative 'player.rb'
 require_relative 'board.rb'
 
-require 'pry-byebug'
-
-class Game
+class Gameplay
     include Display
 
     attr_reader :board
     attr_accessor :player1, :player2, :current_player, :game_over
 
     def initialize
-        show_introduction
         @board = Board.new
         @game_over = false
     end
 
     def play
         game_setup
+        instructions
         board.show
         play_turns
     end
 
-    def create_player(number, otherSymbol = nil)
-        player_name_prompt(number)
-        name = gets.chomp
-        symbol = get_symbol(name, otherSymbol)
-        Player.new(name, symbol)
-    end
+    def validate_move(move)
+        check_move_input(move)
 
-    def get_symbol(name, otherSymbol)
-        player_symbol_prompt(name, otherSymbol)
-        symbol = gets.chomp
-        return symbol if symbol.match?(/^[^0-9]$/) && symbol != otherSymbol
 
-        show_input_error
-        get_symbol(name, otherSymbol)
-    end
 
-    def validate_move(col)
+
+        start_square = move.split[0]
+        end_sqaure = move.split[1]
+
         col = check_move_input(col).to_i-1
         rows = board.length-1
         rows.downto(0) do |row|
@@ -50,17 +40,21 @@ class Game
     end
 
     def check_move_input(move)
-        return move if move.match?(/[1-7]/)
+        return move if move.match?(/\A[1-8][A-Ha-h] [1-8][A-Ha-h]\z/)
 
         show_input_error
         check_move_input(gets.chomp)
     end
 
-    private
-
     def game_setup
-        @player1 = create_player(1)
-        @player2 = create_player(2, player1.symbol)
+        @player1 = Player.new('White')
+        @player2 = Player.new('Black')
+
+        ('A'..'H').each do |l|
+            available_movement_left << "#{l}#{current_square_number}"
+        end
+
+        8.times {Pawn.new('White', '2A')}
     end
 
     def switch_current_player
@@ -70,8 +64,9 @@ class Game
     def play_turns
         @current_player = player1
         until game_over do
-            player_turn_prompt(current_player.name)
+            player_turn_prompt(current_player.colour)
             move = validate_move(gets.chomp)
+
             board.update(move, current_player.symbol)
             board.show
             check_game_over
