@@ -1,134 +1,85 @@
-require_relative './pieces/*.rb'
+require_relative './pieces/*'
 
 class Board
 
-    attr_reader :board
+    attr_reader :board, :black_square, :white_square
 
     def initialize
-        @board = [["♖ ", "♘ ", "♗ ", "♕ ", "♔ ", "♗ ", "♘ ", "♖ "],
-        ["♙ ", "♙ ", "♙ ", "♙ ", "♙ ", "♙ ", "♙ ", "♙ "],
-        ["◼ ", "◻ ", "◼ ", "◻ ", "◼ ", "◻ ", "◼ ", "◻ "],
-        ["◻ ", "◼ ", "◻ ", "◼ ", "◻ ", "◼ ", "◻ ", "◼ "],
-        ["◼ ", "◻ ", "◼ ", "◻ ", "◼ ", "◻ ", "◼ ", "◻ "],
-        ["◻ ", "◼ ", "◻ ", "◼ ", "◻ ", "◼ ", "◻ ", "◼ "],
-        ["♟︎ ", "♟︎ ", "♟︎ ", "♟︎ ", "♟︎ ", "♟︎ ", "♟︎ ", "♟︎ "],
-        ["♜ ", "♞ ", "♝ ", "♛ ", "♚ ", "♝ ", "♞ ", "♜ "]]
+        # create_pieces
 
-        create_pieces
+        black_square_positions = ['1A', '1C', '1E', '1G', '2B', '2D', '2F', '2H',
+            '3A', '3C', '3E', '3G', '4B', '4D', '4F', '4H',
+            '5A', '5C', '5E', '5G', '5B', '5D', '5F', '5H',
+            '7A', '7C', '7E', '7G', '8B', '8D', '8F', '8H']
+        black_square_positions = ['1B', '1D', '1F', '1H', '2A', '2C', '2E', '2G',
+            '3B', '3D', '3F', '3H', '4A', '4C', '4E', '4G',
+            '5B', '5D', '5F', '5H', '6A', '6C', '6E', '6G',
+            '7B', '7D', '7F', '7H', '8A', '8C', '8E', '8G',]
+
+        @board = [[white_rooks[0], white_knights[0], white_bishops[0], white_queen, white_king, white_bishops[1], white_knights[1], white_rooks[1]],
+        [white_pawns[0], white_pawns[1], white_pawns[2], white_pawns[3], white_pawns[4], white_pawns[5], white_pawns[6], white_pawns[7]],
+        [black_square, white_square, black_square, white_square, black_square, white_square, black_square, white_square],
+        [white_square, black_square, white_square, black_square, white_square, black_square, white_square, black_square],
+        [black_square, white_square, black_square, white_square, black_square, white_square, black_square, white_square],
+        [white_square, black_square, white_square, black_square, white_square, black_square, white_square, black_square],
+        [black_pawns[0], black_pawns[1], black_pawns[2], black_pawns[3], black_pawns[4], black_pawns[5], black_pawns[6], black_pawns[7]],
+        [black_rooks[0], black_knights[0], black_bishops[0], black_queen, black_king, black_bishops[1], black_knights[1], black_rooks[1]]]
     end
 
-    def create_pieces
-        white_pawns = []
-        black_pawns = []
+    # def create_pieces
+    #     @black_square = '◼'
+    #     @white_square = '◻'
 
-        ('A'..'H').each do |letter|
-            white_pawns << Pawn.new('White', number, "2#{letter}")
-            black_pawns << Pawn.new('Black', number, "7#{letter}")
-            number++
-        end
+    #     @white_pawns = []
+    #     @black_pawns = []
+    #     ('A'..'H').each do |letter|
+    #         white_pawns << Pawn.new('White', number, "2#{letter}")
+    #         black_pawns << Pawn.new('Black', number, "7#{letter}")
+    #         number++
+    #     end
 
-        white_rooks = []
-        white_knights = []
-        white_bishops = []
-        white_king =
-        white_queen =
+    #     @white_rooks = [Rook.new('White', 0, '1A'), Rook.new('White', 1, '1H')]
+    #     @white_knights = [Knight.new('White', 0, '1B'), Rook.new('White', 1, '1G')]
+    #     @white_bishops = [Bishop.new('White', 0, '1C'), Rook.new('White', 1, '1F')]
+    #     @white_king = King.new('White', '1E')
+    #     @white_queen = Queen.new('White', '1D')
 
-        black_rooks = []
-        black_knights = []
-        black_bishops = []
-        black_king =
-        black_queen =
-        number = 0
-
-
-
-
-    end
+    #     @black_rooks = [Rook.new('Black', 0, '8A'), Rook.new('Black', 1, '8H')]
+    #     @black_knights = [Knight.new('Black', 0, '8B'), Rook.new('Black', 1, '8G')]
+    #     @black_bishops = [Bishop.new('Black', 0, '8C'), Rook.new('Black', 1, '8F')]
+    #     @black_king = King.new('Black', '8E')
+    #     @black_queen = Queen.new('Black', '1D')
+    # end
 
     def show
         puts <<-HEREDOC
 
-        8  |#{board[7][0]}|#{board[7][1]}|#{board[7][2]}|#{board[7][3]}|#{board[7][4]}|#{board[7][5]}|#{board[7][6]}|#{board[7][7]}|
-        7  |#{board[6][0]}|#{board[6][1]}|#{board[6][2]}|#{board[6][3]}|#{board[6][4]}|#{board[6][5]}|#{board[6][6]}|#{board[6][7]}|
-        6  |#{board[5][0]}|#{board[5][1]}|#{board[5][2]}|#{board[5][3]}|#{board[5][4]}|#{board[5][5]}|#{board[5][6]}|#{board[5][7]}|
-        5  |#{board[4][0]}|#{board[4][1]}|#{board[4][2]}|#{board[4][3]}|#{board[4][4]}|#{board[4][5]}|#{board[4][6]}|#{board[4][7]}|
-        4  |#{board[3][0]}|#{board[3][1]}|#{board[3][2]}|#{board[3][3]}|#{board[3][4]}|#{board[3][5]}|#{board[3][6]}|#{board[3][7]}|
-        3  |#{board[2][0]}|#{board[2][1]}|#{board[2][2]}|#{board[2][3]}|#{board[2][4]}|#{board[2][5]}|#{board[2][6]}|#{board[2][7]}|
-        2  |#{board[1][0]}|#{board[1][1]}|#{board[1][2]}|#{board[1][3]}|#{board[1][4]}|#{board[1][5]}|#{board[1][6]}|#{board[1][7]}|
-        1  |#{board[0][0]}|#{board[0][1]}|#{board[0][2]}|#{board[0][3]}|#{board[0][4]}|#{board[0][5]}|#{board[0][6]}|#{board[0][7]}|
+        8  |#{board[7][0].symbol} |#{board[7][1].symbol} |#{board[7][2].symbol} |#{board[7][3].symbol} |#{board[7][4].symbol} |#{board[7][5].symbol} |#{board[7][6].symbol} |#{board[7][7].symbol} |
+        7  |#{board[6][0].symbol} |#{board[6][1].symbol} |#{board[6][2].symbol} |#{board[6][3].symbol} |#{board[6][4].symbol} |#{board[6][5].symbol} |#{board[6][6].symbol} |#{board[6][7].symbol} |
+        6  |#{board[5][0].symbol} |#{board[5][1].symbol} |#{board[5][2].symbol} |#{board[5][3].symbol} |#{board[5][4].symbol} |#{board[5][5].symbol} |#{board[5][6].symbol} |#{board[5][7].symbol} |
+        5  |#{board[4][0].symbol} |#{board[4][1].symbol} |#{board[4][2].symbol} |#{board[4][3].symbol} |#{board[4][4].symbol} |#{board[4][5].symbol} |#{board[4][6].symbol} |#{board[4][7].symbol} |
+        4  |#{board[3][0].symbol} |#{board[3][1].symbol} |#{board[3][2].symbol} |#{board[3][3].symbol} |#{board[3][4].symbol} |#{board[3][5].symbol} |#{board[3][6].symbol} |#{board[3][7].symbol} |
+        3  |#{board[2][0].symbol} |#{board[2][1].symbol} |#{board[2][2].symbol} |#{board[2][3].symbol} |#{board[2][4].symbol} |#{board[2][5].symbol} |#{board[2][6].symbol} |#{board[2][7].symbol} |
+        2  |#{board[1][0].symbol} |#{board[1][1].symbol} |#{board[1][2].symbol} |#{board[1][3].symbol} |#{board[1][4].symbol} |#{board[1][5].symbol} |#{board[1][6].symbol} |#{board[1][7].symbol} |
+        1  |#{board[0][0].symbol} |#{board[0][1].symbol} |#{board[0][2].symbol} |#{board[0][3].symbol} |#{board[0][4].symbol} |#{board[0][5].symbol} |#{board[0][6].symbol} |#{board[0][7].symbol} |
 
             A  B  C  D  E  F  G  H
         HEREDOC
     end
 
-    # def update(move, symbol)
-    #     board[move[0]][move[1]] = symbol
-    # end
+    def available_position?(piece, end_position)
+        available_movement = []
 
-    # def length
-    #     board.length
-    # end
+        [piece.available_movement_left, piece.available_movement_right, piece.available_movement_up, piece.available_movement_down].each do |movements|
+            movements.each do |position|
+                available_movement << position
+                item = board[position[0], position[1]]
+                unless item == black_square || item == white_square
+                    return
+                end
+            end
+        end
 
-    # def check_available(move)
-    #     board[move[0]][move[1]] == " "
-    # end
-
-    # def full?
-    #     board.flatten.none? { |cell| cell == " " }
-    # end
-
-    # def check_winner
-    #     cols = board[0].length
-    #     rows = board.length
-
-    #     # Check verticals
-    #     (0...cols).each do |col|
-    #         (0...rows - 3).each do |row|
-    #             if board[row][col] == board[row+1][col] &&
-    #                board[row+1][col] == board[row+2][col] &&
-    #                board[row+2][col] == board[row+3][col] &&
-    #                board[row][col] != " "
-    #                 return true
-    #             end
-    #         end
-    #     end
-
-    #     # Check horizontals
-    #     (0...rows).each do |row|
-    #         (0...cols - 3).each do |col|
-    #             if board[row][col] == board[row][col+1] &&
-    #                board[row][col+1] == board[row][col+2] &&
-    #                board[row][col+2] == board[row][col+3] &&
-    #                board[row][col] != " "
-    #                 return true
-    #             end
-    #         end
-    #     end
-
-    #     # Check diagonals (from left to right)
-    #     (0...rows - 3).each do |row|
-    #         (0...cols - 3).each do |col|
-    #             if board[row][col] == board[row+1][col+1] &&
-    #                board[row+1][col+1] == board[row+2][col+2] &&
-    #                board[row+2][col+2] == board[row+3][col+3] &&
-    #                board[row][col] != " "
-    #                 return true
-    #             end
-    #         end
-    #     end
-
-    #     # Check diagonals (from right to left)
-    #     (0...rows - 3).each do |row|
-    #         (3...cols).each do |col|
-    #             if board[row][col] == board[row+1][col-1] &&
-    #                board[row+1][col-1] == board[row+2][col-2] &&
-    #                board[row+2][col-2] == board[row+3][col-3] &&
-    #                board[row][col] != " "
-    #                 return true
-    #             end
-    #         end
-    #     end
-
-    #     return false
-    # end
+        available_movement.include?(end_position)
+    end
 end

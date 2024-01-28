@@ -1,9 +1,11 @@
 require_relative 'display.rb'
 require_relative 'player.rb'
 require_relative 'board.rb'
+require_relative 'transformations.rb'
 
 class Gameplay
     include Display
+    include Transformations
 
     attr_reader :board
     attr_accessor :player1, :player2, :current_player, :game_over
@@ -23,20 +25,24 @@ class Gameplay
     def validate_move(move)
         check_move_input(move)
 
+        start_position = [move.split[0].split('')[0].to_i, letters_to_numbers[move.split[0].split('')[1].upcase]]
+        end_position = [move.split[1].split('')[0].to_i, letters_to_numbers[move.split[1].split('')[1].upcase]]
 
+        piece = board.board[start_position[0], start_position[1]]
 
-
-        start_square = move.split[0]
-        end_sqaure = move.split[1]
-
-        col = check_move_input(col).to_i-1
-        rows = board.length-1
-        rows.downto(0) do |row|
-            return [row, col] if board.check_available([row, col])
+        # if no piece on start location
+        if piece == board.white_square || piece == board.black_square
+            show_move_error
+            validate_move(gets.chomp)
         end
 
-        show_move_error
-        validate_move(gets.chomp)
+        # if end position not allowed for piece
+        if not board.available_position?(piece, end_position)
+            show_move_error
+            validate_move(gets.chomp)
+        end
+
+        move
     end
 
     def check_move_input(move)
@@ -67,10 +73,12 @@ class Gameplay
             player_turn_prompt(current_player.colour)
             move = validate_move(gets.chomp)
 
-            board.update(move, current_player.symbol)
-            board.show
-            check_game_over
-            switch_current_player
+            puts move
+
+            # board.update(move, current_player.symbol)
+            # board.show
+            # check_game_over
+            # switch_current_player
         end
     end
 
